@@ -39,6 +39,10 @@ class FortiGate:
             if cookie.name == 'ccsrftoken':
                 csrftoken = cookie.value[1:-1]  # strip quotes
                 session.headers.update({'X-CSRFTOKEN': csrftoken})
+
+        # Check whether login was successful
+        login_check = session.get(self.urlbase + "api/v2/cmdb/system/vdom")
+        login_check.raise_for_status()
         return session
 
     def logout(self, session):
@@ -49,6 +53,7 @@ class FortiGate:
         """
         url = self.urlbase + 'logout'
         session.get(url, verify=False, timeout=self.timeout)
+        logging.info("Session logged out.")
 
     # General Logic Methods
     def does_exist(self, object_url):
@@ -58,6 +63,7 @@ class FortiGate:
         :return: Bool - True if exists, False if not
         """
         session = self.login()
+
         request = session.get(object_url)
         if request.status_code == 200:
             return True
@@ -180,6 +186,12 @@ class FortiGate:
         return results
 
     def update_address_group(self, group_name, data):
+        """
+        Update address group with provided data.
+        :param group_name: Address group being updated
+        :param data: JSON Data with which to upate the address group
+        :return: HTTP Status Code
+        """
         api_url = self.urlbase + "api/v2/cmdb/firewall/addrgrp/" + group_name
         # Check whether target object already exists
         if not self.does_exist(api_url):
@@ -189,19 +201,30 @@ class FortiGate:
         return result
 
     def create_address_group(self, group_name, data):
-        api_url = self.urlbase + "api/v2/cmdb/firewall/addrgrp"
+        """
+        Create address group
+        :param group_name: Address group to be created
+        :param data: JSON Data with which to create the address group
+        :return: HTTP Status Code
+        """
+        api_url = self.urlbase + "api/v2/cmdb/firewall/addrgrp/"
         if self.does_exist(api_url + group_name):
             return 424
         result = self.post(api_url, data)
         return result
 
     def delete_address_group(self, group_name):
+        """
+        Delete firewall address group
+        :param group_name: Address group to be deleted
+        :return: HTTP Status Code
+        """
         api_url = self.urlbase + "api/v2/cmdb/firewall/addrgrp/" + group_name
         result = self.delete(api_url)
         return result
 
     # Service Category Methods
-    def get_service_categories(self, specific=False):
+    def get_service_category(self, specific=False):
         """
         Get service category information from firewall
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
@@ -213,8 +236,46 @@ class FortiGate:
         results = self.get(api_url)
         return results
 
+    def update_service_category(self, category, data):
+        """
+        Update service category with provided data.
+        :param category: Service category being updated
+        :param data: JSON Data with which to upate the service category
+        :return: HTTP Status Code
+        """
+        api_url = self.urlbase + "api/v2/cmdb/firewall.service/category/" + category
+        # Check whether target object already exists
+        if not self.does_exist(api_url):
+            logging.error(f'Requested service category "{category}" does not exist in Firewall config.')
+            return 404
+        result = self.put(api_url, data)
+        return result
+
+    def create_service_category(self, category, data):
+        """
+        Create service category
+        :param category: Service category to be created
+        :param data: JSON Data with which to create the service category
+        :return: HTTP Status Code
+        """
+        api_url = self.urlbase + "api/v2/cmdb/firewall.service/category/"
+        if self.does_exist(api_url + category):
+            return 424
+        result = self.post(api_url, data)
+        return result
+
+    def delete_service_category(self, category):
+        """
+        Delete firewall service category
+        :param category: Service categrory to be deleted
+        :return: HTTP Status Code
+        """
+        api_url = self.urlbase + "api/v2/cmdb/firewall.service/category/" + category
+        result = self.delete(api_url)
+        return result
+
     # Service Group Methods
-    def get_service_groups(self, specific=False):
+    def get_service_group(self, specific=False):
         """
         Get service group information from firewall
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
@@ -226,8 +287,46 @@ class FortiGate:
         results = self.get(api_url)
         return results
 
+    def update_service_group(self, group_name, data):
+        """
+        Update service group with provided data.
+        :param group_name: Service group being updated
+        :param data: JSON Data with which to upate the service group
+        :return: HTTP Status Code
+        """
+        api_url = self.urlbase + "api/v2/cmdb/firewall.service/group/" + group_name
+        # Check whether target object already exists
+        if not self.does_exist(api_url):
+            logging.error(f'Requested service group "{group_name}" does not exist in Firewall config.')
+            return 404
+        result = self.put(api_url, data)
+        return result
+
+    def create_service_group(self, group_name, data):
+        """
+        Create service group
+        :param group_name: Service group to be created
+        :param data: JSON Data with which to create the service group
+        :return: HTTP Status Code
+        """
+        api_url = self.urlbase + "api/v2/cmdb/firewall.service/group/"
+        if self.does_exist(api_url + group_name):
+            return 424
+        result = self.post(api_url, data)
+        return result
+
+    def delete_service_group(self, group_name):
+        """
+        Delete firewall service group
+        :param group_name: Service categrory to be deleted
+        :return: HTTP Status Code
+        """
+        api_url = self.urlbase + "api/v2/cmdb/firewall.service/group/" + group_name
+        result = self.delete(api_url)
+        return result
+
     # Firewall Service Methods
-    def get_firewall_services(self, specific=False):
+    def get_firewall_service(self, specific=False):
         """
         Get service object information from firewall
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
@@ -239,17 +338,112 @@ class FortiGate:
         results = self.get(api_url)
         return results
 
+    def update_firewall_service(self, service_name, data):
+        """
+        Update service with provided data.
+        :param service_name: Service  being updated
+        :param data: JSON Data with which to upate the service
+        :return: HTTP Status Code
+        """
+        api_url = self.urlbase + "api/v2/cmdb/firewall.service/custom/" + service_name
+        # Check whether target object already exists
+        if not self.does_exist(api_url):
+            logging.error(f'Requested service "{service_name}" does not exist in Firewall config.')
+            return 404
+        result = self.put(api_url, data)
+        return result
+
+    def create_firewall_service(self, service_name, data):
+        """
+        Create service
+        :param service_name: Service to be created
+        :param data: JSON Data with which to create the service
+        :return: HTTP Status Code
+        """
+        api_url = self.urlbase + "api/v2/cmdb/firewall.service/custom/"
+        if self.does_exist(api_url + service_name):
+            return 424
+        result = self.post(api_url, data)
+        return result
+
+    def delete_firewall_service(self, service_name):
+        """
+        Delete firewall service
+        :param service_name: Service categrory to be deleted
+        :return: HTTP Status Code
+        """
+        api_url = self.urlbase + "api/v2/cmdb/firewall.service/custom/" + service_name
+        result = self.delete(api_url)
+        return result
+
     # Firewall Policy Methods
-    def get_firewall_policies(self, specific=False):
+    def get_firewall_policy(self, specific=False):
         """
         Get firewall policy information from firewall
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+        Specific can either be the policy name, or the policy ID.
         :return: JSON data for all objects in scope of request, nested in a list.
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/policy/"
         if specific:
-            api_url += specific
+            if type(specific) == int:
+                api_url += str(specific)
+            else:
+                api_url += "?filter=name==" + specific
         results = self.get(api_url)
-        return results
+        if len(results) == 0:
+            return 404
+        else:
+            return results
 
+    def update_firewall_policy(self, policy_id, data):
+        """
+        Update firewall policy with provided data
+        :param policy_id: ID of firewall policy to be updated
+        :param data: Data with which to update the firewall policy
+        :return: HTTP Status Code
+        """
+        api_url = self.urlbase + "api/v2/cmdb/firewall/policy/" + str(policy_id)
+        # Check whether target object already exists
+        if not self.does_exist(api_url):
+            logging.error(f'Requested Policy ID {str(policy_id)} does not exist in Firewall Config.')
+            return 404
+        result = self.put(api_url, data)
+        return result
 
+    def move_firewall_policy(self, policy_id, position, neighbour):
+        """
+        Move firewall policy to new location
+        :param policy_id: ID of firewall policy being moved
+        :param position: "before" or "after"
+        :param neighbour: ID of policy being used as positional reference
+        :return: HTTP Status Code
+        """
+        api_url = self.urlbase + "api/v2/cmdb/firewall/policy/" + str(policy_id)
+        data = f"{{'action': 'move', '{position}': {neighbour}}}"
+        result = self.put(api_url, data)
+        return result
+
+    def create_firewall_policy(self, policy_id, data):
+        """
+        Create Firewall Policy
+        :param policy_id: ID of policy to be created
+        :param data: Data with which to create policy
+        :return: HTTP Status Code
+        """
+        api_url = self.urlbase + "api/v2/cmdb/firewall/policy/"
+        # Check whether object already exists
+        if self.does_exist(api_url + str(policy_id)):
+            return 424
+        result = self.post(api_url, f"{{'json': {data}}}")
+        return result
+
+    def delete_firewall_policy(self, policy_id):
+        """
+        Delete firewall policy
+        :param policy_id: ID of policy to be deleted
+        :return: HTTP Status Code
+        """
+        api_url = self.urlbase + "api/v2/cmdb/firewall/policy/" + str(policy_id)
+        result = self.delete(api_url)
+        return result
