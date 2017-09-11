@@ -22,7 +22,7 @@ class FortiGate:
     # Login / Logout Handlers
     def login(self):
         """
-        Log in to FortiGate with info provided in __init__
+        Log in to FortiGate with info provided in during class instantiation
         :return: Open Session
         """
         session = requests.session()
@@ -167,7 +167,7 @@ class FortiGate:
         return result
 
     # Address Group Methods
-    def get_address_groups(self, specific=False):
+    def get_address_group(self, specific=False):
         """
         Get address group object information from firewall
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
@@ -178,6 +178,27 @@ class FortiGate:
             api_url += specific
         results = self.get(api_url)
         return results
+
+    def update_address_group(self, group_name, data):
+        api_url = self.urlbase + "api/v2/cmdb/firewall/addrgrp/" + group_name
+        # Check whether target object already exists
+        if not self.does_exist(api_url):
+            logging.error(f'Requested address group "{group_name}" does not exist in Firewall config.')
+            return 404
+        result = self.put(api_url, data)
+        return result
+
+    def create_address_group(self, group_name, data):
+        api_url = self.urlbase + "api/v2/cmdb/firewall/addrgrp"
+        if self.does_exist(api_url + group_name):
+            return 424
+        result = self.post(api_url, data)
+        return result
+
+    def delete_address_group(self, group_name):
+        api_url = self.urlbase + "api/v2/cmdb/firewall/addrgrp/" + group_name
+        result = self.delete(api_url)
+        return result
 
     # Service Category Methods
     def get_service_categories(self, specific=False):
