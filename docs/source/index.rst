@@ -1,5 +1,5 @@
 PyFortiAPI - A Python Wrapper for the FortiGate REST API!
-=====================================
+=========================================================
 
 Guide
 ^^^^^
