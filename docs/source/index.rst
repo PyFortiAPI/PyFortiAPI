@@ -1,11 +1,11 @@
-Welcome to Forti-Api's documentation!
+PyFortiAPI - A Python Wrapper for the FortiGate REST API!
 =====================================
 
 Guide
 ^^^^^
 .. toctree::
    :maxdepth: 2
-  
+
    license
 
 Indices and tables
