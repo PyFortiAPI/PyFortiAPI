@@ -36,6 +36,7 @@ Installation
 ------------
 
 This module has been packaged and uploaded to the PyPi test server. To install:
+
 .. code-block:: none
   pip install --index-url https://test.pypi.org/simple/ pyfortiapi
 
