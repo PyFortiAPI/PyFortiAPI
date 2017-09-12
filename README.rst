@@ -30,3 +30,5 @@ Here's a quick usage example::
   200
   >>> device.get_firewall_address('Test')
   404
+
+

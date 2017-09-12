@@ -491,7 +491,7 @@ class FortiGate:
 
     def create_firewall_policy(self, policy_id, data):
         """
-        Create Firewall Policy
+        Create firewall Policy
 
         :param policy_id: ID of policy to be created
         :param data: Data with which to create policy
