@@ -510,3 +510,72 @@ class FortiGate:
         api_url = self.urlbase + "api/v2/cmdb/firewall/policy/" + str(policy_id)
         result = self.delete(api_url)
         return result
+
+    # SNMPv2 Community Methods
+    def get_snmp_community(self, specific=False):
+        """
+        Get SNMP community information from firewall
+
+        :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+            Specific can either be the Community string, or its internal ID.
+        :return: JSON data for all objects in scope of request, nested in a list.
+        """
+        api_url = self.urlbase + "api/v2/cmdb/system.snmp/community/"
+        if specific:
+            if type(specific) == int:
+                api_url += str(specific)
+            else:
+                api_url += "?filter=name==" + specific
+        results = self.get(api_url)
+        return results
+
+    def update_snmp_community(self, community_string, data):
+        """
+        Update SNMP community with provided data
+
+        :param community_string: Service  being updated
+        :param data: JSON Data with which to upate the service
+
+        :return: HTTP Status Code
+        """
+        api_url = self.urlbase + "api/v2/cmdb/system.snmp/community/" + community_string
+        # Check whether target object already exists
+        if not self.does_exist(api_url):
+            logging.error(f'Requested SNMP Community "{community_string}" does not exist in Firewall config.')
+            return 404
+        result = self.put(api_url, data)
+        return result
+
+    def create_snmp_community(self, community_string, data):
+        """
+        Create SNMP community
+
+        :param community_string: SNMP Community to be created
+        :param data: JSON Data with which to create the SNMP community
+
+        :return: HTTP Status Code
+        """
+        api_url = self.urlbase + "api/v2/cmdb/system.snmp/community/"
+        if self.does_exist(api_url + community_string):
+            return 424
+        result = self.post(api_url, data)
+        return result
+
+    def delete_snmp_community(self, community_string):
+        """
+        Delete SNMP community
+
+        :param community_string: SNMP Community to be deleted
+
+        :return: HTTP Status Code
+        """
+        id_check_url = self.urlbase + "api/v2/cmdb/system.snmp/community/?filter=name==" + community_string
+        id_check = self.get(id_check_url)
+        if type(id_check) == int:
+            logging.error("Unable to perform ID check for community " + community_string)
+            return id_check
+        else:
+            community_id = id_check[0]['id']
+        api_url = self.urlbase + "api/v2/cmdb/system.snmp/community/" + str(community_id)
+        result = self.delete(api_url)
+        return result
