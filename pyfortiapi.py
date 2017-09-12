@@ -15,7 +15,7 @@ class FortiGate:
         self.ipaddr = ipaddr
         self.username = username
         self.password = password
-        self.urlbase = f"https://{self.ipaddr}/"
+        self.urlbase = "https://{ipaddr}/".format(ipaddr=self.ipaddr)
         self.timeout = timeout
 
     # Login / Logout Handlers
@@ -31,7 +31,8 @@ class FortiGate:
 
         # Login
         session.post(url,
-                     data=f'username={self.username}&secretkey={self.password}',
+                     data='username={username}&secretkey={password}'.format(username=self.username,
+                                                                            password=self.password),
                      verify=False,
                      timeout=self.timeout)
 
@@ -160,7 +161,7 @@ class FortiGate:
         api_url = self.urlbase + "api/v2/cmdb/firewall/address/" + address
         # Check whether target object exists
         if not self.does_exist(api_url):
-            logging.error(f'Requested address "{address}" does not exist in Firewall config.')
+            logging.error('Requested address "{address}" does not exist in Firewall config.'.format(address=address))
             return 404
         result = self.put(api_url, data)
         return result
@@ -220,7 +221,8 @@ class FortiGate:
         api_url = self.urlbase + "api/v2/cmdb/firewall/addrgrp/" + group_name
         # Check whether target object already exists
         if not self.does_exist(api_url):
-            logging.error(f'Requested address group "{group_name}" does not exist in Firewall config.')
+            logging.error('Requested address group "{group_name}" does not exist in Firewall config.'.format(
+                group_name=group_name))
             return 404
         result = self.put(api_url, data)
         return result
@@ -279,7 +281,8 @@ class FortiGate:
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/category/" + category
         # Check whether target object already exists
         if not self.does_exist(api_url):
-            logging.error(f'Requested service category "{category}" does not exist in Firewall config.')
+            logging.error('Requested service category "{category}" does not exist in Firewall config.'.format(
+                category=category))
             return 404
         result = self.put(api_url, data)
         return result
@@ -338,7 +341,8 @@ class FortiGate:
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/group/" + group_name
         # Check whether target object already exists
         if not self.does_exist(api_url):
-            logging.error(f'Requested service group "{group_name}" does not exist in Firewall config.')
+            logging.error('Requested service group "{group_name}" does not exist in Firewall config.'.format(
+                group_name=group_name))
             return 404
         result = self.put(api_url, data)
         return result
@@ -397,7 +401,8 @@ class FortiGate:
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/custom/" + service_name
         # Check whether target object already exists
         if not self.does_exist(api_url):
-            logging.error(f'Requested service "{service_name}" does not exist in Firewall config.')
+            logging.error('Requested service "{service_name}" does not exist in Firewall config.'.format(
+                service_name=service_name))
             return 404
         result = self.put(api_url, data)
         return result
@@ -463,7 +468,8 @@ class FortiGate:
         api_url = self.urlbase + "api/v2/cmdb/firewall/policy/" + str(policy_id)
         # Check whether target object already exists
         if not self.does_exist(api_url):
-            logging.error(f'Requested Policy ID {str(policy_id)} does not exist in Firewall Config.')
+            logging.error('Requested Policy ID {policy_id does not exist in Firewall Config.'.format(
+                policy_id=str(policy_id)))
             return 404
         result = self.put(api_url, data)
         return result
@@ -479,7 +485,7 @@ class FortiGate:
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/policy/" + str(policy_id)
-        data = f"{{'action': 'move', '{position}': {neighbour}}}"
+        data = "{{'action': 'move', '{position}': {neighbour}}}".format(position=position, neighbour=neighbour)
         result = self.put(api_url, data)
         return result
 
@@ -496,7 +502,7 @@ class FortiGate:
         # Check whether object already exists
         if self.does_exist(api_url + str(policy_id)):
             return 424
-        result = self.post(api_url, f"{{'json': {data}}}")
+        result = self.post(api_url, "{{'json': {data}}}".format(data=data))
         return result
 
     def delete_firewall_policy(self, policy_id):
@@ -541,7 +547,8 @@ class FortiGate:
         api_url = self.urlbase + "api/v2/cmdb/system.snmp/community/" + community_string
         # Check whether target object already exists
         if not self.does_exist(api_url):
-            logging.error(f'Requested SNMP Community "{community_string}" does not exist in Firewall config.')
+            logging.error('Requested SNMP Community "{community_string}" does not exist in Firewall config.'.format(
+                community_string=community_string))
             return 404
         result = self.put(api_url, data)
         return result
