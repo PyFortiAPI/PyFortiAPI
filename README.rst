@@ -20,7 +20,7 @@ Here's a quick usage example::
   >>> device.create_firewall_address('Test', create_payload)
   200
   >>> device.get_firewall_address('Test')
-  [{'name': 'Test', 'q_origin_key': 'Test', 'uuid': 'd2b08124-7b12-51e7-f70a-4077f7f3d77f', 'subnet': '192.168.0.0 255.255.255.0', 'type': 'ipmask', 'start-ip': '192.168.0.0', 'end-ip': '255.255.0.0', 'fqdn': '', 'country': '\n\x05', 'wildcard-fqdn': '', 'cache-ttl': 0, 'wildcard': '192.168.0.0 255.255.0.0', 'comment': '', 'visibility': 'enable', 'associated-interface': '', 'color': 0, 'tags': [], 'allow-routing': 'disable'}]
+  [{'name': 'Test', 'q_origin_key': 'Test', 'uuid': '9bf2e12a-977b-51e7-ff8d-22d7cf593ab9', 'subnet': '192.168.0.0 255.255.255.0', 'type': 'ipmask', 'start-ip': '192.168.0.0', 'end-ip': '255.255.0.0', 'fqdn': '', 'country': '\n\x05', 'wildcard-fqdn': '', 'cache-ttl': 0, 'wildcard': '192.168.0.0 255.255.0.0', 'comment': '', 'visibility': 'enable', 'associated-interface': '', 'color': 0, 'tags': [], 'allow-routing': 'disable'}]
   >>> update_payload = "{'subnet': '10.0.0.0 255.0.0.0'}"
   >>> device.update_firewall_address('Test', update_payload)
   200
@@ -31,4 +31,11 @@ Here's a quick usage example::
   >>> device.get_firewall_address('Test')
   404
 
+
+Installation
+------------
+
+This module has been packaged and uploaded to the PyPi test server. To install:
+.. code-block:: none
+  pip install --index-url https://test.pypi.org/simple/ pyfortiapi
 
