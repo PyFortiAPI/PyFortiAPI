@@ -10,9 +10,8 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
 class FortiGate:
-    def __init__(self, hostname, ipaddr, username, password, timeout=10):
+    def __init__(self, ipaddr, username, password, timeout=10):
 
-        self.hostname = hostname
         self.ipaddr = ipaddr
         self.username = username
         self.password = password
@@ -23,6 +22,8 @@ class FortiGate:
     def login(self):
         """
         Log in to FortiGate with info provided in during class instantiation
+
+
         :return: Open Session
         """
         session = requests.session()
@@ -48,7 +49,9 @@ class FortiGate:
     def logout(self, session):
         """
         Log out of device
+
         :param session: Session created by login method
+
         :return: None
         """
         url = self.urlbase + 'logout'
@@ -59,7 +62,9 @@ class FortiGate:
     def does_exist(self, object_url):
         """
         GET URL to assert whether it exists within the firewall
+
         :param object_url: Object to locate
+
         :return: Bool - True if exists, False if not
         """
         session = self.login()
@@ -74,7 +79,9 @@ class FortiGate:
     def get(self, url):
         """
         Perform GET operation on provided URL
+
         :param url: Target of GET operation
+
         :return: Request result if successful (type list), HTTP status code otherwise (type int)
         """
         session = self.login()
@@ -88,8 +95,10 @@ class FortiGate:
     def put(self, url, data):
         """
         Perform PUT operation on provided URL
+
         :param url: Target of PUT operation
         :param data: JSON data. MUST be a correctly formatted string. e.g. "{'key': 'value'}"
+
         :return: HTTP status code returned from PUT operation
         """
         session = self.login()
@@ -100,8 +109,10 @@ class FortiGate:
     def post(self, url, data):
         """
         Perform POST operation on provided URL
+
         :param url: Target of POST operation
         :param data: JSON data. MUST be a correctly formatted string. e.g. "{'key': 'value'}"
+
         :return: HTTP status code returned from POST operation
         """
         session = self.login()
@@ -112,7 +123,9 @@ class FortiGate:
     def delete(self, url):
         """
         Perform DELETE operation on provided URL
+
         :param url: Target of DELETE operation
+
         :return: HTTP status code returned from DELETE operation
         """
         session = self.login()
@@ -124,7 +137,9 @@ class FortiGate:
     def get_firewall_address(self, specific=False):
         """
         Get address object information from firewall
+
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+
         :return: JSON data for all objects in scope of request, nested in a list.
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/address/"
@@ -135,9 +150,11 @@ class FortiGate:
 
     def update_firewall_address(self, address, data):
         """
-        Update firewall address record with provided data.
+        Update firewall address record with provided data
+
         :param address: Address record being updated
         :param data: JSON Data with which to upate the address record
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/address/" + address
@@ -151,8 +168,10 @@ class FortiGate:
     def create_firewall_address(self, address, data):
         """
         Create firewall address record
+
         :param address: Address record to be created
         :param data: JSON Data with which to create the address record
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/address/"
@@ -165,7 +184,9 @@ class FortiGate:
     def delete_firewall_address(self, address):
         """
         Delete firewall address record
+
         :param address: Address record to be deleted
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/address/" + address
@@ -176,7 +197,9 @@ class FortiGate:
     def get_address_group(self, specific=False):
         """
         Get address group object information from firewall
+
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+
         :return: JSON data for all objects in scope of request, nested in a list.
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/addrgrp/"
@@ -187,9 +210,11 @@ class FortiGate:
 
     def update_address_group(self, group_name, data):
         """
-        Update address group with provided data.
+        Update address group with provided data
+
         :param group_name: Address group being updated
         :param data: JSON Data with which to upate the address group
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/addrgrp/" + group_name
@@ -203,9 +228,11 @@ class FortiGate:
     def create_address_group(self, group_name, data):
         """
         Create address group
+
         :param group_name: Address group to be created
         :param data: JSON Data with which to create the address group
-        :return: HTTP Status Code
+
+        :return: HTTP Status Code.
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/addrgrp/"
         if self.does_exist(api_url + group_name):
@@ -216,7 +243,9 @@ class FortiGate:
     def delete_address_group(self, group_name):
         """
         Delete firewall address group
+
         :param group_name: Address group to be deleted
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/addrgrp/" + group_name
@@ -227,7 +256,9 @@ class FortiGate:
     def get_service_category(self, specific=False):
         """
         Get service category information from firewall
+
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+
         :return: JSON data for all objects in scope of request, nested in a list.
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/category/"
@@ -239,8 +270,10 @@ class FortiGate:
     def update_service_category(self, category, data):
         """
         Update service category with provided data.
+
         :param category: Service category being updated
         :param data: JSON Data with which to upate the service category
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/category/" + category
@@ -254,8 +287,10 @@ class FortiGate:
     def create_service_category(self, category, data):
         """
         Create service category
+
         :param category: Service category to be created
         :param data: JSON Data with which to create the service category
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/category/"
@@ -267,7 +302,9 @@ class FortiGate:
     def delete_service_category(self, category):
         """
         Delete firewall service category
+
         :param category: Service categrory to be deleted
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/category/" + category
@@ -278,7 +315,9 @@ class FortiGate:
     def get_service_group(self, specific=False):
         """
         Get service group information from firewall
+
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+
         :return: JSON data for all objects in scope of request, nested in a list.
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/group/"
@@ -289,9 +328,11 @@ class FortiGate:
 
     def update_service_group(self, group_name, data):
         """
-        Update service group with provided data.
+        Update service group with provided data
+
         :param group_name: Service group being updated
         :param data: JSON Data with which to upate the service group
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/group/" + group_name
@@ -305,8 +346,10 @@ class FortiGate:
     def create_service_group(self, group_name, data):
         """
         Create service group
+
         :param group_name: Service group to be created
         :param data: JSON Data with which to create the service group
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/group/"
@@ -318,7 +361,9 @@ class FortiGate:
     def delete_service_group(self, group_name):
         """
         Delete firewall service group
+
         :param group_name: Service categrory to be deleted
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/group/" + group_name
@@ -329,7 +374,9 @@ class FortiGate:
     def get_firewall_service(self, specific=False):
         """
         Get service object information from firewall
+
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+
         :return: JSON data for all objects in scope of request, nested in a list.
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/custom/"
@@ -340,9 +387,11 @@ class FortiGate:
 
     def update_firewall_service(self, service_name, data):
         """
-        Update service with provided data.
+        Update service with provided data
+
         :param service_name: Service  being updated
         :param data: JSON Data with which to upate the service
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/custom/" + service_name
@@ -356,8 +405,10 @@ class FortiGate:
     def create_firewall_service(self, service_name, data):
         """
         Create service
+
         :param service_name: Service to be created
         :param data: JSON Data with which to create the service
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/custom/"
@@ -369,7 +420,9 @@ class FortiGate:
     def delete_firewall_service(self, service_name):
         """
         Delete firewall service
+
         :param service_name: Service categrory to be deleted
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/custom/" + service_name
@@ -380,8 +433,10 @@ class FortiGate:
     def get_firewall_policy(self, specific=False):
         """
         Get firewall policy information from firewall
+
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
-        Specific can either be the policy name, or the policy ID.
+            Specific can either be the policy name, or the policy ID.
+
         :return: JSON data for all objects in scope of request, nested in a list.
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/policy/"
@@ -399,8 +454,10 @@ class FortiGate:
     def update_firewall_policy(self, policy_id, data):
         """
         Update firewall policy with provided data
+
         :param policy_id: ID of firewall policy to be updated
         :param data: Data with which to update the firewall policy
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/policy/" + str(policy_id)
@@ -414,9 +471,11 @@ class FortiGate:
     def move_firewall_policy(self, policy_id, position, neighbour):
         """
         Move firewall policy to new location
+
         :param policy_id: ID of firewall policy being moved
         :param position: "before" or "after"
         :param neighbour: ID of policy being used as positional reference
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/policy/" + str(policy_id)
@@ -427,8 +486,10 @@ class FortiGate:
     def create_firewall_policy(self, policy_id, data):
         """
         Create Firewall Policy
+
         :param policy_id: ID of policy to be created
         :param data: Data with which to create policy
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/policy/"
@@ -441,7 +502,9 @@ class FortiGate:
     def delete_firewall_policy(self, policy_id):
         """
         Delete firewall policy
+
         :param policy_id: ID of policy to be deleted
+
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/policy/" + str(policy_id)
