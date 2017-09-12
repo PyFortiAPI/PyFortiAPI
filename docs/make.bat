@@ -7,9 +7,9 @@ REM Command file for Sphinx documentation
 if "%SPHINXBUILD%" == "" (
 	set SPHINXBUILD=python -msphinx
 )
-set SOURCEDIR=source
-set BUILDDIR=build
-set SPHINXPROJ=Forti-Api
+set SOURCEDIR=.
+set BUILDDIR=_build
+set SPHINXPROJ=PyFortiAPI
 
 if "%1" == "" goto help
 

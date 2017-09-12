@@ -4,9 +4,9 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = python -msphinx
-SPHINXPROJ    = Forti-Api
-SOURCEDIR     = source
-BUILDDIR      = build
+SPHINXPROJ    = PyFortiAPI
+SOURCEDIR     = .
+BUILDDIR      = _build
 
 # Put it first so that "make" without argument is like "make help".
 help:
