@@ -19,3 +19,9 @@ Features
 User Guide
 ==========
 
+.. toctree::
+   :maxdepth: 2
+
+   user/install
+   user/quickstart
+   user/operations
