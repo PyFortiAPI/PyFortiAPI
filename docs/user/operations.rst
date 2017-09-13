@@ -10,11 +10,11 @@ Get
 
 To get all address objects from your device::
 
-    >>> addresses - device.get_firewall_address()
+    >>> addresses = device.get_firewall_address()
 
 Alternatively, this method looks for a single parameter ("specific") which can be provided to target a single object::
 
-    >>> my_address - device.get_firewall_address('Test')
+    >>> my_address = device.get_firewall_address('Test')
 
 The output of this function will be a list. If you've asked for a specific address, this list will be one item long,
 but will still be a list.
@@ -33,25 +33,24 @@ To update an address object, you'll need to pass two parameters to the update_fi
 the address object being updated, and a JSON formatted object configuration (only the fields being updated are
 required)::
 
-    >>> payload - "{'subnet': '192.168.0.0 255.255.255.0'}"
+    >>> payload = "{'subnet': '192.168.0.0 255.255.255.0'}"
     >>> device.update_firewall_address('Test', payload)
     200
     >>> device.get_firewall_address('Test')[0]['subnet']
     '192.168.0.0 255.255.255.0'
 
-Note: you can't just use a python dictionary as your payload::
+Note: you can't just use a python dictionary as your payload. Please refer to the "424" section in
+:doc:`common_issues`.
 
-    >>> payload - {'subnet': '10.0.0.0 255.0.0.0'}
-    >>> device.update_firewall_address('Test', payload)
-    424
+Create
+~~~~~~
 
-However, if you repr the dict to create a string representation of it::
+To create an address object, you'll need to provide two parameters to the create_firewall_address function. The name
+of the address object being created ("**address**"), and a JSON formatted object configuration ("**data**")::
 
-    >>> payload - {'subnet': '10.0.0.0 255.0.0.0'}
-    >>> device.update_firewall_address('Test', repr(payload))
+    >>> payload = "{'name': 'Test', 'type': 'subnet', 'subnet': '192.168.0.0 255.255.255.0'}"
+    >>> device.create_firewall_address('Test', payload)
     200
-    >>> device.get_firewall_address('Test')[0]['subnet']
-    '10.0.0.0 255.0.0.0'
 
 Delete
 ~~~~~~
@@ -69,7 +68,27 @@ Address Groups
 Get
 ~~~
 
+To get all address groups from your device::
+
+    >>> groups = device.get_address_group()
+
+Alternatively, this method looks for a single parameter ("specific") which can be provided to target a single object::
+
+    >>> my_group = device.get_address_group('Test Group')
+
+The output of this function will be a list. If you've asked for a specific group, this list will be one item long,
+but will still be a list.
+
+Each member of the list will be a python dictionary, directly mapped from the FortiGate API's JSON result. This can be
+seen in the example below::
+
+    >>> device.get_address_group('Test Group')
+    [{'name': 'Test Group', 'q_origin_key': 'Test Group', 'uuid': '505cbc26-9871-51e7-63ce-8e5b80914ff9', 'member': [{'name': 'Test', 'q_origin_key': 'Test'}], 'comment': '', 'visibility': 'enable', 'color': 0, 'tags': [], 'allow-routing': 'disable'}]
+
 Update
+~~~~~~
+
+Create
 ~~~~~~
 
 Delete
