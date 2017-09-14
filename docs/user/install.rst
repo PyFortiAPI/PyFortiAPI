@@ -1,13 +1,16 @@
 Installation
 ============
 
-Alpha
------
+PyPI
+----
 
-Currently only the alpha / in-development version of this package is available.
-It can be installed by pip from PyPi's test server:
+Couldn't be much simpler:
 
 .. code-block:: none
 
-  pip install --index-url https://test.pypi.org/simple/ pyfortiapi
+  pip install pyfortiapi
 
+Source
+------
+
+Of course, if you'd rather install from source, you can find it `here <https://www.github.com/jsimpso/pyfortiapi>`_
