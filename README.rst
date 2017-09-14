@@ -47,5 +47,9 @@ To install, just:
 
   pip install pyfortiapi
   
-  
+Documentation
+-------------
+
+Extended documentation is available at https://pyfortiapi.readthedocs.io
+
 
