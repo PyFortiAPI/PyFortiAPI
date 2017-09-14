@@ -1,12 +1,12 @@
 PyFortiAPI
 ==========
 
+.. image:: https://img.shields.io/github/license/jsimpso/PyFortiAPI.svg   
+    :target: https://github.com/jsimpso/PyFortiAPI 
+    
 .. image:: https://img.shields.io/pypi/v/pyfortiapi.svg
     :target: https://pypi.python.org/pypi/PyFortiAPI
 
-.. image:: https://img.shields.io/github/license/jsimpso/PyFortiAPI.svg   
-    :target: https://github.com/jsimpso/PyFortiAPI 
-  
 .. image:: https://img.shields.io/pypi/pyversions/pyfortiapi.svg   
     :target: https://pypi.python.org/pypi/PyFortiAPI
   
