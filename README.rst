@@ -1,15 +1,21 @@
-.. highlight:: python
-
-==========
 PyFortiAPI
 ==========
 
+.. image:: https://img.shields.io/pypi/v/pyfortiapi.svg
+    :target: https://pypi.python.org/pypi/PyFortiAPI
+
 .. image:: https://img.shields.io/github/license/jsimpso/PyFortiAPI.svg   
-  :target: https://github.com/jsimpso/PyFortiAPI
+    :target: https://github.com/jsimpso/PyFortiAPI 
   
+.. image:: https://img.shields.io/pypi/pyversions/pyfortiapi.svg   
+    :target: https://pypi.python.org/pypi/PyFortiAPI
+  
+    
 A Python wrapper for the FortiGate REST API (FortiOS 5.4.x+)
 
-Here's a quick usage example::
+Here's a quick usage example:
+
+.. code-block:: python
 
   >>> import pyfortiapi
   >>> 
