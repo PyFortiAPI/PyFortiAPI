@@ -1,5 +1,9 @@
 #!/usr/bin/env Python
-# Developed using Python 3.6.1
+__author__ = "James Simpson"
+__copyright__ = "Copyright 2017, James Simpson"
+__license__ = "MIT"
+__version__ = "0.0.2"
+
 
 import requests
 import logging
@@ -10,13 +14,14 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
 class FortiGate:
-    def __init__(self, ipaddr, username, password, timeout=10):
+    def __init__(self, ipaddr, username, password, timeout=10, vdom="root"):
 
         self.ipaddr = ipaddr
         self.username = username
         self.password = password
         self.urlbase = "https://{ipaddr}/".format(ipaddr=self.ipaddr)
         self.timeout = timeout
+        self.vdom = vdom
 
     # Login / Logout Handlers
     def login(self):
@@ -86,7 +91,7 @@ class FortiGate:
         :return: Request result if successful (type list), HTTP status code otherwise (type int)
         """
         session = self.login()
-        request = session.get(url, verify=False, timeout=self.timeout)
+        request = session.get(url, verify=False, timeout=self.timeout, params='vdom='+self.vdom)
         self.logout(session)
         if request.status_code == 200:
             return request.json()['results']
@@ -103,7 +108,7 @@ class FortiGate:
         :return: HTTP status code returned from PUT operation
         """
         session = self.login()
-        result = session.put(url, data=data, verify=False, timeout=self.timeout).status_code
+        result = session.put(url, data=data, verify=False, timeout=self.timeout, params='vdom='+self.vdom).status_code
         self.logout(session)
         return result
 
@@ -117,7 +122,7 @@ class FortiGate:
         :return: HTTP status code returned from POST operation
         """
         session = self.login()
-        result = session.post(url, data=data, verify=False, timeout=self.timeout).status_code
+        result = session.post(url, data=data, verify=False, timeout=self.timeout, params='vdom='+self.vdom).status_code
         self.logout(session)
         return result
 
@@ -130,7 +135,7 @@ class FortiGate:
         :return: HTTP status code returned from DELETE operation
         """
         session = self.login()
-        result = session.delete(url, verify=False, timeout=self.timeout).status_code
+        result = session.delete(url, verify=False, timeout=self.timeout, params='vdom='+self.vdom).status_code
         self.logout(session)
         return result
 
@@ -535,54 +540,48 @@ class FortiGate:
         results = self.get(api_url)
         return results
 
-    def update_snmp_community(self, community_string, data):
+    def update_snmp_community(self, community_id, data):
         """
         Update SNMP community with provided data
 
-        :param community_string: Service  being updated
-        :param data: JSON Data with which to upate the service
+        :param community_id: ID of community  being updated
+        :param data: JSON Data with which to update the community
 
         :return: HTTP Status Code
         """
-        api_url = self.urlbase + "api/v2/cmdb/system.snmp/community/" + community_string
+        api_url = self.urlbase + "api/v2/cmdb/system.snmp/community/" + str(community_id)
         # Check whether target object already exists
         if not self.does_exist(api_url):
-            logging.error('Requested SNMP Community "{community_string}" does not exist in Firewall config.'.format(
-                community_string=community_string))
+            logging.error('Requested SNMP Community ID "{community_id}" does not exist in Firewall config.'.format(
+                community_id=community_id))
             return 404
         result = self.put(api_url, data)
         return result
 
-    def create_snmp_community(self, community_string, data):
+    def create_snmp_community(self, community_id, data):
         """
         Create SNMP community
 
-        :param community_string: SNMP Community to be created
+        :param community_id: ID of the SNMP Community to be created
         :param data: JSON Data with which to create the SNMP community
 
         :return: HTTP Status Code
         """
         api_url = self.urlbase + "api/v2/cmdb/system.snmp/community/"
-        if self.does_exist(api_url + community_string):
+        if self.does_exist(api_url + str(community_id)):
             return 424
         result = self.post(api_url, data)
         return result
 
-    def delete_snmp_community(self, community_string):
+    def delete_snmp_community(self, community_id):
         """
         Delete SNMP community
 
-        :param community_string: SNMP Community to be deleted
+        :param community_id: ID of the SNMP Community to be deleted
 
         :return: HTTP Status Code
         """
-        id_check_url = self.urlbase + "api/v2/cmdb/system.snmp/community/?filter=name==" + community_string
-        id_check = self.get(id_check_url)
-        if type(id_check) == int:
-            logging.error("Unable to perform ID check for community " + community_string)
-            return id_check
-        else:
-            community_id = id_check[0]['id']
         api_url = self.urlbase + "api/v2/cmdb/system.snmp/community/" + str(community_id)
         result = self.delete(api_url)
         return result
+

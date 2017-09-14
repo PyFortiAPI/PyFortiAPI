@@ -326,7 +326,7 @@ To update a firewall policy, you'll need to pass two parameters to the update_fi
 the firewall policy being updated, and a JSON formatted object configuration (only the fields being updated are
 required)::
 
-    payload = "{'status': 'disable'}"
+    >>> payload = "{'status': 'disable'}"
     >>> device.update_firewall_policy(500, payload)
     200
     >>> device.get_firewall_policy(500)[0]['status']
@@ -385,13 +385,13 @@ To delete a firewall policy, you just need to pass the policy ID to the delete_f
     200
 
 
-SNMPv2 Community
-----------------
+SNMP Community
+--------------
 
 Get
 ~~~
 
-To get all SNMPv2 communities from your device::
+To get all SNMP communities from your device::
 
     >>> communities = device.get_snmp_community()
 
@@ -403,31 +403,49 @@ Specific in this instance can be either a community name, or a community ID::
     >>> device.get_snmp_community('my_community_string') == device.get_snmp_community(100)
     True
 
-The output of this function will be a list. If you've asked for a specific group, this list will be one item long,
+The output of this function will be a list. If you've asked for a specific community, this list will be one item long,
 but will still be a list.
 
 Each member of the list will be a python dictionary, directly mapped from the FortiGate API's JSON result. This can be
 seen in the example below::
 
-    >>> device.get_service_group('Test Group')
-    [{'name': 'Test Group', 'q_origin_key': 'Test Group', 'member': [{'name': 'Test', 'q_origin_key': 'Test'}], 'proxy': 'disable', 'comment': '', 'color': 0}]
+    >>> device.get_snmp_community('my_community_string')
+    [{'id': 100, 'q_origin_key': 100, 'name': 'my_community_string', 'status': 'enable', 'hosts': [{'id': 1, 'q_origin_key': 1, 'source-ip': '0.0.0.0', 'ip': '192.168.0.0 255.255.255.0', 'ha-direct': 'disable', 'host-type': 'any'}], 'hosts6': [], 'query-v1-status': 'enable', 'query-v1-port': 161, 'query-v2c-status': 'enable', 'query-v2c-port': 161, 'trap-v1-status': 'enable', 'trap-v1-lport': 162, 'trap-v1-rport': 162, 'trap-v2c-status': 'enable', 'trap-v2c-lport': 162, 'trap-v2c-rport': 162, 'events': 'cpu-high mem-low log-full intf-ip vpn-tun-up vpn-tun-down ha-switch ha-hb-failure ips-signature ips-anomaly av-virus av-oversize av-pattern av-fragmented fm-if-change bgp-established bgp-backward-transition ha-member-up ha-member-down ent-conf-change av-conserve av-bypass av-oversize-passed av-oversize-blocked ips-pkg-update ips-fail-open faz-disconnect wc-ap-up wc-ap-down fswctl-session-up fswctl-session-down load-balance-real-server-down'}]
 
+
+Update
+~~~~~~
+
+To update an SNMP Community, you'll need to pass two parameters to the update_snmp_community function. The ID of the
+community being updated, and a JSON formatted object configuration (only the fields being updated are required)::
+
+    >>> payload = "{'status': 'disable'}"
+    >>> device.update_snmp_community(100, payload)
+    200
+    >>> device.get_snmp_community(100)[0]['status']
+    'disable'
+
+Note: you can't just use a python dictionary as your payload. Please refer to the "424" section in
+:doc:`common_issues`.
 
 Create
 ~~~~~~
+
+To create an SNMP community, you'll need to provide two parameters to the create_snmp_community function. The ID
+of the SNMP community being created ("**community_id**"), and a JSON formatted object configuration ("**data**")::
 
     >>>payload = {'id': 100,
                   'name': 'my_community_string',
                   'status': 'enable',
                   'hosts': [{'ip': '192.168.0.0 255.255.255.0'}]}
     >>> payload = repr(payload)
-    >>> device.create_snmp_community('my_community_string', payload)
+    >>> device.create_snmp_community(100, payload)
 
-
-
-
-Update
-~~~~~~
 
 Delete
 ~~~~~~
+
+To delete an SNMP Community, you just need to pass the community ID to the delete_snmp_community function::
+
+    >>> device.delete_snmp_community(100)
+    200
