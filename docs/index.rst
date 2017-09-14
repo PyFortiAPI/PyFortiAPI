@@ -8,13 +8,6 @@ PyFortiAPI - A Python Wrapper for the FortiGate REST API!
    code
 
 
-Features
-========
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
 User Guide
 ==========
 
@@ -26,3 +19,9 @@ User Guide
    user/quickstart
    user/operations
    user/common_issues
+
+Features
+========
+
+* :ref:`genindex`
+* :ref:`search`
