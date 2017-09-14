@@ -105,8 +105,8 @@ Note: you can't just use a python dictionary as your payload. Please refer to th
 Create
 ~~~~~~
 
-To create an address group, you'll need to provide two parameters to the create_firewall_address function. The name
-of the address object being created ("**group_name**"), and a JSON formatted object configuration ("**data**")::
+To create an address group, you'll need to provide two parameters to the create_address_group function. The name
+of the address group being created ("**group_name**"), and a JSON formatted object configuration ("**data**")::
 
     >>> payload = "{'name': 'Test Group', 'member': [{'name': 'Test'}]}"
     >>> device.create_address_group('Test Group', payload)
@@ -152,8 +152,8 @@ the category being updated, and a JSON formatted object configuration (only the 
     >>> payload = "{'comment': 'Test test test!'}"
     >>> device.update_service_category('Test Category', payload)
     200
-    >>> device.get_service_category('Test Category')
-    [{'name': 'Test Category', 'q_origin_key': 'Test Category', 'comment': 'Test test test!'}]
+    >>> device.get_service_category('Test Category')[0]['comment']
+    'Test test test!'
 
 Note: you can't just use a python dictionary as your payload. Please refer to the "424" section in
 :doc:`common_issues`.
@@ -171,7 +171,7 @@ of the service category being created ("**category**"), and a JSON formatted obj
 Delete
 ~~~~~~
 
-To delete a service category, you just need to pass the group name to the delete_service_category function::
+To delete a service category, you just need to pass the category name to the delete_service_category function::
 
     >>> device.delete_service_category('Test Category')
     200
@@ -182,14 +182,57 @@ Service Groups
 Get
 ~~~
 
+To get all service groups from your device::
+
+    >>> groups = device.get_service_group()
+
+Alternatively, this method looks for a single parameter ("specific") which can be provided to target a single object::
+
+    >>> my_group = device.get_service_group('Test Group')
+
+The output of this function will be a list. If you've asked for a specific group, this list will be one item long,
+but will still be a list.
+
+Each member of the list will be a python dictionary, directly mapped from the FortiGate API's JSON result. This can be
+seen in the example below::
+
+    >>> device.get_service_group('Test Group')
+    [{'name': 'Test Group', 'q_origin_key': 'Test Group', 'member': [{'name': 'Test', 'q_origin_key': 'Test'}], 'proxy': 'disable', 'comment': '', 'color': 0}]
+
 Update
 ~~~~~~
+
+To update a service group, you'll need to pass two parameters to the update_service_group function. The name of
+the service group being updated, and a JSON formatted object configuration (only the fields being updated are
+required)::
+
+    >>> payload = "{'member': [{'name': 'Test'}]}"
+    >>> device.update_service_group('Test Group', payload)
+    200
+    >>> device.get_service_group('Test Group')[0]['member']
+    [{'name': 'Test', 'q_origin_key': 'Test'}]
+
+
+Note: you can't just use a python dictionary as your payload. Please refer to the "424" section in
+:doc:`common_issues`.
 
 Create
 ~~~~~~
 
+To create a service group, you'll need to provide two parameters to the create_service_group function. The name
+of the service group being created ("**group_name**"), and a JSON formatted object configuration ("**data**")::
+
+    >>> payload = "{'name': 'Test Group', 'member': [{'name': 'Test'}]}"
+    >>> device.create_service_group('Test Group', payload)
+    200
+
 Delete
 ~~~~~~
+
+To delete a service group, you just need to pass the group name to the delete_service_group function::
+
+    >>> device.delete_service_group('Test Group')
+    200
 
 Firewall Service
 ----------------
@@ -197,14 +240,57 @@ Firewall Service
 Get
 ~~~
 
+To get all firewall services from your device::
+
+    >>> services = device.get_firewall_service()
+
+Alternatively, this method looks for a single parameter ("specific") which can be provided to target a single object::
+
+    >>> my_service = device.get_firewall_service('Test')
+
+The output of this function will be a list. If you've asked for a specific group, this list will be one item long,
+but will still be a list.
+
+Each member of the list will be a python dictionary, directly mapped from the FortiGate API's JSON result. This can be
+seen in the example below::
+
+    >>> device.get_firewall_service('Test')
+    [{'name': 'Test', 'q_origin_key': 'Test', 'proxy': 'disable', 'category': 'General', 'protocol': 'TCP/UDP/SCTP', 'helper': 'auto', 'iprange': '0.0.0.0', 'fqdn': '', 'protocol-number': 6, 'icmptype': '', 'icmpcode': '', 'tcp-portrange': '80', 'udp-portrange': '123', 'sctp-portrange': '', 'tcp-halfclose-timer': 0, 'tcp-halfopen-timer': 0, 'tcp-timewait-timer': 0, 'udp-idle-timer': 0, 'session-ttl': 0, 'check-reset-range': 'default', 'comment': '', 'color': 0, 'visibility': 'enable', 'app-service-type': 'disable', 'app-category': [], 'application': []}]
+
 Update
 ~~~~~~
+
+To update a firewall service, you'll need to pass two parameters to the update_firewall_service function. The name of
+the firewall service being updated, and a JSON formatted object configuration (only the fields being updated are
+required)::
+
+    >>> payload = "{'tcp-portrange': '80 443'}"
+    >>> device.update_firewall_service('Test', payload)
+    200
+    >>> device.get_firewall_service('Test')[0]['tcp-portrange']
+    '80 443'
+
+Note: you can't just use a python dictionary as your payload. Please refer to the "424" section in
+:doc:`common_issues`.
 
 Create
 ~~~~~~
 
+To create a firewall service, you'll need to provide two parameters to the create_firewall_service function. The name
+of the service being created ("**service_name**"), and a JSON formatted object configuration ("**data**")::
+
+    >>> payload = "{'name': 'Test', 'category': 'General', 'tcp-portrange': '80', 'udp-portrange': '123'}"
+    >>> device.create_firewall_service('Test', payload)
+    200
+
 Delete
 ~~~~~~
+
+To delete a firewall service, you just need to pass the service name to the delete_firewall_service function::
+
+    >>> device.delete_firewall_service('Test')
+    200
+
 
 Firewall Policy
 ---------------
@@ -212,17 +298,92 @@ Firewall Policy
 Get
 ~~~
 
+To get all firewall policies from your device::
+
+    >>> policies = device.get_firewall_policy()
+
+Alternatively, this method looks for a single parameter ("specific") which can be provided to target a single object.
+Specific in this instance can be either a policy name, or a policy ID::
+
+    >>> my_policy = device.get_firewall_policy('Test Policy')
+    >>> my_policy = device.get_firewall_policy(500)
+    >>> device.get_firewall_policy('Test Policy') == device.get_firewall_policy(500)
+    True
+
+The output of this function will be a list. If you've asked for a specific group, this list will be one item long,
+but will still be a list.
+
+Each member of the list will be a python dictionary, directly mapped from the FortiGate API's JSON result. This can be
+seen in the example below::
+
+    >>> device.get_firewall_policy(500)
+    [{'policyid': 500, 'q_origin_key': 500, 'name': 'Test Policy', 'uuid': '9b70d28a-990f-51e7-95ef-dd4f2065b5ce', 'srcintf': [{'name': 'lan', 'q_origin_key': 'lan'}], 'dstintf': [{'name': 'wan', 'q_origin_key': 'wan'}], 'srcaddr': [{'name': 'all', 'q_origin_key': 'all'}], 'dstaddr': [{'name': 'Test', 'q_origin_key': 'Test'}], 'internet-service': 'disable', 'internet-service-id': [], 'internet-service-custom': [], 'rtp-nat': 'disable', 'rtp-addr': [], 'learning-mode': 'disable', 'action': 'accept', 'send-deny-packet': 'disable', 'firewall-session-dirty': 'check-all', 'status': 'enable', 'schedule': 'always', 'schedule-timeout': 'disable', 'service': [{'name': 'ALL', 'q_origin_key': 'ALL'}], 'dscp-match': 'disable', 'dscp-negate': 'disable', 'dscp-value': '000000', 'tcp-session-without-syn': 'disable', 'utm-status': 'disable', 'profile-type': 'single', 'profile-group': '', 'av-profile': '', 'webfilter-profile': '', 'dnsfilter-profile': '', 'spamfilter-profile': '', 'dlp-sensor': '', 'ips-sensor': '', 'application-list': '', 'voip-profile': '', 'icap-profile': '', 'waf-profile': '', 'profile-protocol-options': '', 'ssl-ssh-profile': '', 'logtraffic': 'utm', 'logtraffic-start': 'disable', 'traffic-shaper': '', 'traffic-shaper-reverse': '', 'per-ip-shaper': '', 'application': [], 'app-category': [], 'url-category': [], 'nat': 'enable', 'permit-any-host': 'disable', 'permit-stun-host': 'disable', 'fixedport': 'disable', 'ippool': 'disable', 'poolname': [], 'session-ttl': 0, 'vlan-cos-fwd': 255, 'vlan-cos-rev': 255, 'inbound': 'disable', 'outbound': 'enable', 'natinbound': 'disable', 'natoutbound': 'disable', 'wccp': 'disable', 'ntlm': 'disable', 'ntlm-guest': 'disable', 'ntlm-enabled-browsers': [], 'fsso': 'disable', 'wsso': 'enable', 'rsso': 'disable', 'fsso-agent-for-ntlm': '', 'groups': [], 'users': [], 'devices': [], 'auth-path': 'disable', 'disclaimer': 'disable', 'vpntunnel': '', 'natip': '0.0.0.0 0.0.0.0', 'match-vip': 'disable', 'diffserv-forward': 'disable', 'diffserv-reverse': 'disable', 'diffservcode-forward': '000000', 'diffservcode-rev': '000000', 'tcp-mss-sender': 0, 'tcp-mss-receiver': 0, 'comments': '', 'label': '', 'global-label': '', 'auth-cert': '', 'auth-redirect-addr': '', 'redirect-url': '', 'identity-based-route': '', 'block-notification': 'disable', 'custom-log-fields': [], 'tags': [], 'replacemsg-override-group': '', 'srcaddr-negate': 'disable', 'dstaddr-negate': 'disable', 'service-negate': 'disable', 'internet-service-negate': 'disable', 'timeout-send-rst': 'disable', 'captive-portal-exempt': 'disable', 'ssl-mirror': 'disable', 'ssl-mirror-intf': [], 'scan-botnet-connections': 'disable', 'dsri': 'disable', 'radius-mac-auth-bypass': 'disable', 'delay-tcp-npu-session': 'disable'}]
+
 Update
 ~~~~~~
+
+To update a firewall policy, you'll need to pass two parameters to the update_firewall_policy function. The ID of
+the firewall policy being updated, and a JSON formatted object configuration (only the fields being updated are
+required)::
+
+    payload = "{'status': 'disable'}"
+    >>> device.update_firewall_policy(500, payload)
+    200
+    >>> device.get_firewall_policy(500)[0]['status']
+    'disable'
+
+Note: you can't just use a python dictionary as your payload. Please refer to the "424" section in
+:doc:`common_issues`.
 
 Create
 ~~~~~~
 
+To create a firewall policy, you'll need to provide two parameters to the create_firewall_policy function. The ID
+of the firewall policy being created ("**policy_id**"), and a JSON formatted object configuration ("**data**")::
+
+    >>> payload = {'policyid': 500,
+         'name': 'Test Policy',
+         'srcintf': [{'name': 'lan'}],
+         'dstintf': [{'name': 'wan'}],
+         'srcaddr': [{'name': 'all'}],
+         'dstaddr': [{'name': 'Test'}],
+         'action': 'accept',
+         'status': 'enable',
+         'schedule': 'always',
+         'service': [{'name': 'ALL'}],
+         'nat': 'enable',
+         'fsso': 'enable',
+         'wsso': 'disable',
+         'rsso': 'enable'}
+    >>> payload = repr(payload)
+    >>> device.create_firewall_policy(500, payload)
+    200
+
+
 Move
 ~~~~
 
+To move a firewall policy, you'll need to call the move_firewall_policy function and pass in three parameters:
+
+    - policy_id (the ID of the policy being moved)
+    - position  ("before" or "after")
+    - neighbour (the ID of the policy being used as a positional anchor)
+
+.. code-block:: python
+
+    >>> device.move_firewall_policy(policy_id=500,
+                                    position="after",
+                                    neighbour=2)
+    200
+
 Delete
 ~~~~~~
+
+To delete a firewall policy, you just need to pass the policy ID to the delete_firewall_policy function::
+
+    >>> device.delete_firewall_policy(500)
+    200
+
 
 SNMPv2 Community
 ----------------
@@ -230,8 +391,40 @@ SNMPv2 Community
 Get
 ~~~
 
+To get all SNMPv2 communities from your device::
+
+    >>> communities = device.get_snmp_community()
+
+Alternatively, this method looks for a single parameter ("specific") which can be provided to target a single object.
+Specific in this instance can be either a community name, or a community ID::
+
+    >>> my_community = device.get_snmp_community('my_community_string')
+    >>> my_community = device.get_snmp_community(100)
+    >>> device.get_snmp_community('my_community_string') == device.get_snmp_community(100)
+    True
+
+The output of this function will be a list. If you've asked for a specific group, this list will be one item long,
+but will still be a list.
+
+Each member of the list will be a python dictionary, directly mapped from the FortiGate API's JSON result. This can be
+seen in the example below::
+
+    >>> device.get_service_group('Test Group')
+    [{'name': 'Test Group', 'q_origin_key': 'Test Group', 'member': [{'name': 'Test', 'q_origin_key': 'Test'}], 'proxy': 'disable', 'comment': '', 'color': 0}]
+
+
 Create
 ~~~~~~
+
+    >>>payload = {'id': 100,
+                  'name': 'my_community_string',
+                  'status': 'enable',
+                  'hosts': [{'ip': '192.168.0.0 255.255.255.0'}]}
+    >>> payload = repr(payload)
+    >>> device.create_snmp_community('my_community_string', payload)
+
+
+
 
 Update
 ~~~~~~
