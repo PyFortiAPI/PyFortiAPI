@@ -2,7 +2,7 @@
 __author__ = "James Simpson"
 __copyright__ = "Copyright 2017, James Simpson"
 __license__ = "MIT"
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 
 import requests
@@ -456,7 +456,9 @@ class FortiGate:
             else:
                 api_url += "?filter=name==" + specific
         results = self.get(api_url)
-        if len(results) == 0:
+        if type(results) == int:
+            return results
+        elif len(results) == 0:
             return 404
         else:
             return results
