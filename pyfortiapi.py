@@ -475,7 +475,7 @@ class FortiGate:
         api_url = self.urlbase + "api/v2/cmdb/firewall/policy/" + str(policy_id)
         # Check whether target object already exists
         if not self.does_exist(api_url):
-            logging.error('Requested Policy ID {policy_id does not exist in Firewall Config.'.format(
+            logging.error('Requested Policy ID {policy_id} does not exist in Firewall Config.'.format(
                 policy_id=str(policy_id)))
             return 404
         result = self.put(api_url, data)
