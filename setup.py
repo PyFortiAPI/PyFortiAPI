@@ -3,13 +3,13 @@ from os import path
 
 here = path.abspath(path.dirname(__file__))
 # Get the long description from the README file
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 
 setup(
     name='PyFortiAPI',
-    version='0.0.6',
+    version='0.0.7',
     description='Python Wrapper for FortiGate API',
     long_description=long_description,
     long_description_content_type="text/markdown",
