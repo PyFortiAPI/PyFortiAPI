@@ -12,6 +12,7 @@ setup(
     version='0.0.5',
     description='Python Wrapper for FortiGate API',
     long_description=long_description,
+    long_description_content_type="text/markdown",
     author='James Simpson',
     author_email='James@snowterminal.com',
     url='https://github.com/jsimpso/PyFortiAPI',
