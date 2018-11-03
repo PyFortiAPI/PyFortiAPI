@@ -74,8 +74,8 @@ class FortiGate:
         :return: Bool - True if exists, False if not
         """
         session = self.login()
-
         request = session.get(object_url)
+        self.logout(session)        
         if request.status_code == 200:
             return True
         else:
