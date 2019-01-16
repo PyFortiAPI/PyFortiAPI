@@ -145,6 +145,7 @@ class FortiGate:
         Get address object information from firewall
 
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+        :param filters: If provided, the raw filter is appended to the API call.
 
         :return: JSON data for all objects in scope of request, nested in a list.
         """
@@ -207,6 +208,7 @@ class FortiGate:
         Get address group object information from firewall
 
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+        :param filters: If provided, the raw filter is appended to the API call.
 
         :return: JSON data for all objects in scope of request, nested in a list.
         """
@@ -269,6 +271,7 @@ class FortiGate:
         Get service category information from firewall
 
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+        :param filters: If provided, the raw filter is appended to the API call.
 
         :return: JSON data for all objects in scope of request, nested in a list.
         """
@@ -331,6 +334,7 @@ class FortiGate:
         Get service group information from firewall
 
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+        :param filters: If provided, the raw filter is appended to the API call.
 
         :return: JSON data for all objects in scope of request, nested in a list.
         """
@@ -393,6 +397,7 @@ class FortiGate:
         Get service object information from firewall
 
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+        :param filters: If provided, the raw filter is appended to the API call.
 
         :return: JSON data for all objects in scope of request, nested in a list.
         """
@@ -456,6 +461,7 @@ class FortiGate:
 
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
             Specific can either be the policy name, or the policy ID.
+        :param filters: If provided, the raw filter is appended to the API call.
 
         :return: JSON data for all objects in scope of request, nested in a list.
         """
@@ -543,6 +549,8 @@ class FortiGate:
 
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
             Specific can either be the Community string, or its internal ID.
+        :param filters: If provided, the raw filter is appended to the API call.
+        
         :return: JSON data for all objects in scope of request, nested in a list.
         """
         api_url = self.urlbase + "api/v2/cmdb/system.snmp/community/"
@@ -601,3 +609,20 @@ class FortiGate:
         result = self.delete(api_url)
         return result
 
+    # ISDB read
+    def get_internet_services(self, specific=False, filters=False):
+        """
+        Get ISDB (internet services database)
+
+        :param specific: If provided, a specific object will be returned. 
+        :param filters: If provided, the raw filter is appended to the API call.
+        
+        :return: JSON data for all objects in scope of request, nested in a list.
+        """
+        api_url = self.urlbase + "api/v2/cmdb/firewall/internet-service/"
+        if specific:
+            api_url += str(specific)
+        elif filters:
+            api_url += "?filter=" + filters
+        results = self.get(api_url)
+        return results
