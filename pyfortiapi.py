@@ -140,17 +140,20 @@ class FortiGate:
         return result
 
     # Firewall Address Methods
-    def get_firewall_address(self, specific=False):
+    def get_firewall_address(self, specific=False, filters=False):
         """
         Get address object information from firewall
 
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+        :param filters: If provided, the raw filter is appended to the API call.
 
         :return: JSON data for all objects in scope of request, nested in a list.
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/address/"
         if specific:
             api_url += specific
+        elif filters:
+            api_url += "?filter=" + filters
         results = self.get(api_url)
         return results
 
@@ -200,17 +203,20 @@ class FortiGate:
         return result
 
     # Address Group Methods
-    def get_address_group(self, specific=False):
+    def get_address_group(self, specific=False, filters=False):
         """
         Get address group object information from firewall
 
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+        :param filters: If provided, the raw filter is appended to the API call.
 
         :return: JSON data for all objects in scope of request, nested in a list.
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/addrgrp/"
         if specific:
             api_url += specific
+        elif filters:
+            api_url += "?filter=" + filters
         results = self.get(api_url)
         return results
 
@@ -260,17 +266,20 @@ class FortiGate:
         return result
 
     # Service Category Methods
-    def get_service_category(self, specific=False):
+    def get_service_category(self, specific=False, filters=False):
         """
         Get service category information from firewall
 
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+        :param filters: If provided, the raw filter is appended to the API call.
 
         :return: JSON data for all objects in scope of request, nested in a list.
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/category/"
         if specific:
             api_url += specific
+        elif filters:
+            api_url += "?filter=" + filters
         results = self.get(api_url)
         return results
 
@@ -320,17 +329,20 @@ class FortiGate:
         return result
 
     # Service Group Methods
-    def get_service_group(self, specific=False):
+    def get_service_group(self, specific=False, filters=False):
         """
         Get service group information from firewall
 
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+        :param filters: If provided, the raw filter is appended to the API call.
 
         :return: JSON data for all objects in scope of request, nested in a list.
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/group/"
         if specific:
             api_url += specific
+        elif filters:
+            api_url += "?filter=" + filters
         results = self.get(api_url)
         return results
 
@@ -380,17 +392,20 @@ class FortiGate:
         return result
 
     # Firewall Service Methods
-    def get_firewall_service(self, specific=False):
+    def get_firewall_service(self, specific=False, filters=False):
         """
         Get service object information from firewall
 
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
+        :param filters: If provided, the raw filter is appended to the API call.
 
         :return: JSON data for all objects in scope of request, nested in a list.
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall.service/custom/"
         if specific:
             api_url += specific
+        elif filters:
+            api_url += "?filter=" + filters
         results = self.get(api_url)
         return results
 
@@ -440,12 +455,13 @@ class FortiGate:
         return result
 
     # Firewall Policy Methods
-    def get_firewall_policy(self, specific=False):
+    def get_firewall_policy(self, specific=False, filters=False):
         """
         Get firewall policy information from firewall
 
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
             Specific can either be the policy name, or the policy ID.
+        :param filters: If provided, the raw filter is appended to the API call.
 
         :return: JSON data for all objects in scope of request, nested in a list.
         """
@@ -455,6 +471,8 @@ class FortiGate:
                 api_url += str(specific)
             else:
                 api_url += "?filter=name==" + specific
+        elif filters:
+            api_url += "?filter=" + filters
         results = self.get(api_url)
         if type(results) == int:
             return results
@@ -525,12 +543,14 @@ class FortiGate:
         return result
 
     # SNMPv2 Community Methods
-    def get_snmp_community(self, specific=False):
+    def get_snmp_community(self, specific=False, filters=False):
         """
         Get SNMP community information from firewall
 
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
             Specific can either be the Community string, or its internal ID.
+        :param filters: If provided, the raw filter is appended to the API call.
+        
         :return: JSON data for all objects in scope of request, nested in a list.
         """
         api_url = self.urlbase + "api/v2/cmdb/system.snmp/community/"
@@ -539,6 +559,8 @@ class FortiGate:
                 api_url += str(specific)
             else:
                 api_url += "?filter=name==" + specific
+        elif filters:
+            api_url += "?filter=" + filters
         results = self.get(api_url)
         return results
 
@@ -587,3 +609,20 @@ class FortiGate:
         result = self.delete(api_url)
         return result
 
+    # ISDB read
+    def get_internet_services(self, specific=False, filters=False):
+        """
+        Get ISDB (internet services database)
+
+        :param specific: If provided, a specific object will be returned. 
+        :param filters: If provided, the raw filter is appended to the API call.
+        
+        :return: JSON data for all objects in scope of request, nested in a list.
+        """
+        api_url = self.urlbase + "api/v2/cmdb/firewall/internet-service/"
+        if specific:
+            api_url += str(specific)
+        elif filters:
+            api_url += "?filter=" + filters
+        results = self.get(api_url)
+        return results

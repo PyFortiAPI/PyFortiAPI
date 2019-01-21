@@ -12,14 +12,19 @@ To get all address objects from your device::
 
     >>> addresses = device.get_firewall_address()
 
-Alternatively, this method looks for a single parameter ("specific") which can be provided to target a single object::
+You can select a single object by passing the name of the object as an unnamed parameter, or by using the 'specific' parameter::
 
     >>> my_address = device.get_firewall_address('Test')
+    >>> my_address = device.get_firewall_address(specific='Test')
 
-The output of this function will be a list. If you've asked for a specific address, this list will be one item long,
+This method also accepts a named parameter 'filters' which can accept a raw Fortigate API filter to pass through, for example::
+
+    >>> addresses = device.get_firewall_address(filters='visibility==enable')
+
+The output of these functions will be a list. If you've asked for a specific address, this list will be one item long,
 but will still be a list.
 
-Each member of the list will be a python dictionary, directly mapped from the FortiGate API's JSON result. This can be
+Each member of the list will be a Python dictionary, directly mapped from the FortiGate API's JSON result. This can be
 seen in the example below::
 
     >>> device.get_firewall_address('Test')
@@ -39,7 +44,7 @@ required)::
     >>> device.get_firewall_address('Test')[0]['subnet']
     '192.168.0.0 255.255.255.0'
 
-Note: you can't just use a python dictionary as your payload. Please refer to the "424" section in
+Note: you can't just use a Python dictionary as your payload. Please refer to the "424" section in
 :doc:`common_issues`.
 
 Create
@@ -72,14 +77,19 @@ To get all address groups from your device::
 
     >>> groups = device.get_address_group()
 
-Alternatively, this method looks for a single parameter ("specific") which can be provided to target a single object::
+You can select a single object by passing the name of the object as an unnamed parameter, or by using the 'specific' parameter::
 
     >>> my_group = device.get_address_group('Test Group')
+    >>> my_group = device.get_address_group(specific='Test Group')
 
-The output of this function will be a list. If you've asked for a specific group, this list will be one item long,
+This method also accepts a named parameter 'filters' which can accept a raw Fortigate API filter to pass through, for example::
+
+    >>> groups = device.get_address_group(filters='visibility==enable')
+
+The output of these functions will be a list. If you've asked for a specific group, this list will be one item long,
 but will still be a list.
 
-Each member of the list will be a python dictionary, directly mapped from the FortiGate API's JSON result. This can be
+Each member of the list will be a Python dictionary, directly mapped from the FortiGate API's JSON result. This can be
 seen in the example below::
 
     >>> device.get_address_group('Test Group')
@@ -99,7 +109,7 @@ required)::
     [{'name': 'Test', 'q_origin_key': 'Test'}]
 
 
-Note: you can't just use a python dictionary as your payload. Please refer to the "424" section in
+Note: you can't just use a Python dictionary as your payload. Please refer to the "424" section in
 :doc:`common_issues`.
 
 Create
@@ -130,14 +140,19 @@ To get all service categories from your device::
 
     >>> categories = device.get_service_category()
 
-Alternatively, this method looks for a single parameter ("specific") which can be provided to target a single object::
+You can select a single object by passing the name of the object as an unnamed parameter, or by using the 'specific' parameter::
 
     >>> my_cat = device.get_service_category('Test Category')
+    >>> my_cat = device.get_service_category(specific='Test Category')
 
-The output of this function will be a list. If you've asked for a specific service category, this list will be one item
+This method also accepts a named parameter 'filters' which can accept a raw Fortigate API filter to pass through, for example::
+    
+    >>> categories = device.get_service_category(filters='visibility==enable')
+
+The output of these functions will be a list. If you've asked for a specific service category, this list will be one item
 long, but will still be a list.
 
-Each member of the list will be a python dictionary, directly mapped from the FortiGate API's JSON result. This can be
+Each member of the list will be a Python dictionary, directly mapped from the FortiGate API's JSON result. This can be
 seen in the example below::
 
     >>> device.get_service_category('Test Category')
@@ -155,7 +170,7 @@ the category being updated, and a JSON formatted object configuration (only the 
     >>> device.get_service_category('Test Category')[0]['comment']
     'Test test test!'
 
-Note: you can't just use a python dictionary as your payload. Please refer to the "424" section in
+Note: you can't just use a Python dictionary as your payload. Please refer to the "424" section in
 :doc:`common_issues`.
 
 Create
@@ -186,14 +201,19 @@ To get all service groups from your device::
 
     >>> groups = device.get_service_group()
 
-Alternatively, this method looks for a single parameter ("specific") which can be provided to target a single object::
+You can select a single object by passing the name of the object as an unnamed parameter, or by using the 'specific' parameter::
 
     >>> my_group = device.get_service_group('Test Group')
+    >>> my_group = device.get_service_group(specific='Test Group')
 
-The output of this function will be a list. If you've asked for a specific group, this list will be one item long,
+This method also accepts a named parameter 'filters' which can accept a raw Fortigate API filter to pass through, for example::
+
+    >>> groups = device.get_service_group(filters='visibility==enable')
+
+The output of these functions will be a list. If you've asked for a specific group, this list will be one item long,
 but will still be a list.
 
-Each member of the list will be a python dictionary, directly mapped from the FortiGate API's JSON result. This can be
+Each member of the list will be a Python dictionary, directly mapped from the FortiGate API's JSON result. This can be
 seen in the example below::
 
     >>> device.get_service_group('Test Group')
@@ -213,7 +233,7 @@ required)::
     [{'name': 'Test', 'q_origin_key': 'Test'}]
 
 
-Note: you can't just use a python dictionary as your payload. Please refer to the "424" section in
+Note: you can't just use a Python dictionary as your payload. Please refer to the "424" section in
 :doc:`common_issues`.
 
 Create
@@ -244,14 +264,19 @@ To get all firewall services from your device::
 
     >>> services = device.get_firewall_service()
 
-Alternatively, this method looks for a single parameter ("specific") which can be provided to target a single object::
+You can select a single object by passing the name of the object as an unnamed parameter, or by using the 'specific' parameter::
 
     >>> my_service = device.get_firewall_service('Test')
+    >>> my_service = device.get_firewall_service(specific='Test')
 
-The output of this function will be a list. If you've asked for a specific group, this list will be one item long,
+This method also accepts a named parameter 'filters' which can accept a raw Fortigate API filter to pass through, for example::
+
+    >>> services = device.get_firewall_service(filters='visibility==enable')
+
+The output of these functions will be a list. If you've asked for a specific group, this list will be one item long,
 but will still be a list.
 
-Each member of the list will be a python dictionary, directly mapped from the FortiGate API's JSON result. This can be
+Each member of the list will be a Python dictionary, directly mapped from the FortiGate API's JSON result. This can be
 seen in the example below::
 
     >>> device.get_firewall_service('Test')
@@ -270,7 +295,7 @@ required)::
     >>> device.get_firewall_service('Test')[0]['tcp-portrange']
     '80 443'
 
-Note: you can't just use a python dictionary as your payload. Please refer to the "424" section in
+Note: you can't just use a Python dictionary as your payload. Please refer to the "424" section in
 :doc:`common_issues`.
 
 Create
@@ -302,18 +327,23 @@ To get all firewall policies from your device::
 
     >>> policies = device.get_firewall_policy()
 
-Alternatively, this method looks for a single parameter ("specific") which can be provided to target a single object.
-Specific in this instance can be either a policy name, or a policy ID::
+Alternatively, you can pass a single unnamed parameter, or a named parameter ('specific') which can be provided to target a single object. Specific in this instance can be either a policy name, or a policy ID::
 
-    >>> my_policy = device.get_firewall_policy('Test Policy')
+    >>> my_policy = device.get_firewall_policy(specific='Test Policy')
     >>> my_policy = device.get_firewall_policy(500)
-    >>> device.get_firewall_policy('Test Policy') == device.get_firewall_policy(500)
+    >>> device.get_firewall_policy(specific='Test Policy') == device.get_firewall_policy(500)
     True
 
-The output of this function will be a list. If you've asked for a specific group, this list will be one item long,
+This method also accepts a named parameter 'filters' which can accept a raw Fortigate API filter to pass through, for example::
+
+    >>> policies = device.get_firewall_policy(filters='visibility==enable')
+    >>> policies = device.get_firewall_policy(filters='visibility==enable&comment=@SearchTerm')
+
+
+The output of these functions will be a list. If you've asked for a specific group, this list will be one item long,
 but will still be a list.
 
-Each member of the list will be a python dictionary, directly mapped from the FortiGate API's JSON result. This can be
+Each member of the list will be a Python dictionary, directly mapped from the FortiGate API's JSON result. This can be
 seen in the example below::
 
     >>> device.get_firewall_policy(500)
@@ -332,7 +362,7 @@ required)::
     >>> device.get_firewall_policy(500)[0]['status']
     'disable'
 
-Note: you can't just use a python dictionary as your payload. Please refer to the "424" section in
+Note: you can't just use a Python dictionary as your payload. Please refer to the "424" section in
 :doc:`common_issues`.
 
 Create
@@ -395,18 +425,21 @@ To get all SNMP communities from your device::
 
     >>> communities = device.get_snmp_community()
 
-Alternatively, this method looks for a single parameter ("specific") which can be provided to target a single object.
-Specific in this instance can be either a community name, or a community ID::
+Alternatively, you can pass a single unnamed parameter, or a named parameter ('specific') which can be provided to target a single object. Specific in this instance can be either a community name, or a community ID::
 
-    >>> my_community = device.get_snmp_community('my_community_string')
+    >>> my_community = device.get_snmp_community(specific='my_community_string')
     >>> my_community = device.get_snmp_community(100)
-    >>> device.get_snmp_community('my_community_string') == device.get_snmp_community(100)
+    >>> device.get_snmp_community('my_community_string') == device.get_snmp_community(specific=100)
     True
 
-The output of this function will be a list. If you've asked for a specific community, this list will be one item long,
+This method also accepts a named parameter 'filters' which can accept a raw Fortigate API filter to pass through, for example::
+
+    >>> communities = device.get_snmp_community(filters='query-v2c-status==enable')
+
+The output of these functions will be a list. If you've asked for a specific community, this list will be one item long,
 but will still be a list.
 
-Each member of the list will be a python dictionary, directly mapped from the FortiGate API's JSON result. This can be
+Each member of the list will be a Python dictionary, directly mapped from the FortiGate API's JSON result. This can be
 seen in the example below::
 
     >>> device.get_snmp_community('my_community_string')
@@ -425,7 +458,7 @@ community being updated, and a JSON formatted object configuration (only the fie
     >>> device.get_snmp_community(100)[0]['status']
     'disable'
 
-Note: you can't just use a python dictionary as your payload. Please refer to the "424" section in
+Note: you can't just use a Python dictionary as your payload. Please refer to the "424" section in
 :doc:`common_issues`.
 
 Create
