@@ -2,7 +2,7 @@
 __author__ = "James Simpson"
 __copyright__ = "Copyright 2017, James Simpson"
 __license__ = "MIT"
-__version__ = "0.0.8"
+__version__ = "0.1.0"
 
 
 import requests
