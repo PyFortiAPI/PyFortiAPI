@@ -91,7 +91,7 @@ class FortiGate:
         :return: Request result if successful (type list), HTTP status code otherwise (type int)
         """
         session = self.login()
-        request = session.get(url, verify=False, timeout=self.timeout, params='vdom='+self.vdom)
+        request = session.get(url, verify=False, timeout=self.timeout, params='?vdom='+self.vdom)
         self.logout(session)
         if request.status_code == 200:
             return request.json()['results']
@@ -108,7 +108,7 @@ class FortiGate:
         :return: HTTP status code returned from PUT operation
         """
         session = self.login()
-        result = session.put(url, data=data, verify=False, timeout=self.timeout, params='vdom='+self.vdom).status_code
+        result = session.put(url, data=data, verify=False, timeout=self.timeout, params='?vdom='+self.vdom).status_code
         self.logout(session)
         return result
 
@@ -122,7 +122,7 @@ class FortiGate:
         :return: HTTP status code returned from POST operation
         """
         session = self.login()
-        result = session.post(url, data=data, verify=False, timeout=self.timeout, params='vdom='+self.vdom).status_code
+        result = session.post(url, data=data, verify=False, timeout=self.timeout, params='?vdom='+self.vdom).status_code
         self.logout(session)
         return result
 
@@ -135,7 +135,7 @@ class FortiGate:
         :return: HTTP status code returned from DELETE operation
         """
         session = self.login()
-        result = session.delete(url, verify=False, timeout=self.timeout, params='vdom='+self.vdom).status_code
+        result = session.delete(url, verify=False, timeout=self.timeout, params='?vdom='+self.vdom).status_code
         self.logout(session)
         return result
 
