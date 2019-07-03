@@ -14,12 +14,13 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
 class FortiGate:
-    def __init__(self, ipaddr, username, password, timeout=10, vdom="root"):
+    def __init__(self, ipaddr, username, password, timeout=10, vdom="root", port="443"):
 
         self.ipaddr = ipaddr
         self.username = username
         self.password = password
-        self.urlbase = "https://{ipaddr}/".format(ipaddr=self.ipaddr)
+        self.port = port
+        self.urlbase = "https://{ipaddr}:{port}/".format(ipaddr=self.ipaddr, port=self.port)
         self.timeout = timeout
         self.vdom = vdom
 
