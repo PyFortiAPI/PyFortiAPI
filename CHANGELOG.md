@@ -1,6 +1,23 @@
 # Table Of Contents
+1. [Version 0.1.1](#v011)
 1. [Version 0.1.0](#v010)
 1. [Version 0.0.8](#v008)
+
+---
+
+## v0.1.1
+
+### New Features
+
+Added ability to specify custom HTTPS port [[PR#10]](https://github.com/jsimpso/PyFortiAPI/pull/10)
+
+### Enhancements
+
+VDOM parameter added to `does_exist` function [[PR#10]](https://github.com/jsimpso/PyFortiAPI/pull/10)
+
+### Bug Fixes
+
+None
 
 ---
 
