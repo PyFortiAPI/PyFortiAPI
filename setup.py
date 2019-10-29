@@ -9,7 +9,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='PyFortiAPI',
-    version='0.1.1',
+    version='0.2.0',
     description='Python Wrapper for FortiGate API',
     long_description=long_description,
     long_description_content_type="text/markdown",

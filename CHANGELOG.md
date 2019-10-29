@@ -1,11 +1,11 @@
 # Table Of Contents
-1. [Version 0.1.1](#v011)
+1. [Version 0.2.0](#v020)
 1. [Version 0.1.0](#v010)
 1. [Version 0.0.8](#v008)
 
 ---
 
-## v0.1.1
+## v0.2.0
 
 ### New Features
 
