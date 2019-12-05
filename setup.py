@@ -1,9 +1,14 @@
+import platform
 from setuptools import setup
 from os import path
 
 here = path.abspath(path.dirname(__file__))
+py_maj = int(platform.python_version().split('.')[0])
 # Get the long description from the README file
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+open_kwargs = {}
+if py_maj > 2:
+    open_kwargs = {'encoding': 'utf-8'}
+with open(path.join(here, 'README.md'), **open_kwargs) as f:
     long_description = f.read()
 
 
