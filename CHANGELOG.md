@@ -1,7 +1,25 @@
 # Table Of Contents
+1. [Version 0.2.1](#v021)
 1. [Version 0.2.0](#v020)
 1. [Version 0.1.0](#v010)
 1. [Version 0.0.8](#v008)
+
+
+---
+
+## v0.2.1
+
+### New Features
+
+None
+
+### Enhancements
+
+None
+
+### Bug Fixes
+
+* Add URL encoding of addresses to escape special characters when using the `update_firewall_address` function [[PR#16]](https://github.com/jsimpso/PyFortiAPI/pull/16)
 
 ---
 
