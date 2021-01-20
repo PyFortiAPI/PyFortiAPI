@@ -167,7 +167,7 @@ class FortiGate:
 
         :return: HTTP Status Code
         """
-        api_url = self.urlbase + "api/v2/cmdb/firewall/address/" + address
+        api_url = self.urlbase + "api/v2/cmdb/firewall/address/" + requests.utils.quote(address, safe='')
         # Check whether target object exists
         if not self.does_exist(api_url):
             logging.error('Requested address "{address}" does not exist in Firewall config.'.format(address=address))
