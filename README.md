@@ -6,6 +6,8 @@
 
 A Python wrapper for the FortiGate REST API (FortiOS 5.4.x+)
 
+:warning: This project is not currently being actively maintained. Please see `CONTRIBUTING.md` if you wish to change this.
+
 Here's a quick usage example:
 
 ``` sourceCode python
