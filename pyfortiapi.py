@@ -8,13 +8,11 @@ __version__ = "0.2.1"
 import requests
 import logging
 
-# Disable requests' warnings for insecure connections
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
 class FortiGate:
-    def __init__(self, ipaddr, username, password, timeout=10, vdom="root", port="443"):
+    def __init__(self, ipaddr, username, password, timeout=10, vdom="root", port="443", verify=False):
 
         self.ipaddr = ipaddr
         self.username = username
@@ -23,6 +21,7 @@ class FortiGate:
         self.urlbase = "https://{ipaddr}:{port}/".format(ipaddr=self.ipaddr,port=self.port)
         self.timeout = timeout
         self.vdom = vdom
+        self.verify = verify
 
     # Login / Logout Handlers
     def login(self):
@@ -33,13 +32,17 @@ class FortiGate:
         :return: Open Session
         """
         session = requests.session()
+        if not self.verify:
+            # Disable requests' warnings for insecure connections
+            requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
         url = self.urlbase + 'logincheck'
 
         # Login
         session.post(url,
                      data='username={username}&secretkey={password}'.format(username=self.username,
                                                                             password=self.password),
-                     verify=False,
+                     verify=self.verify,
                      timeout=self.timeout)
 
         # Get CSRF token from cookies, add to headers
@@ -62,7 +65,7 @@ class FortiGate:
         :return: None
         """
         url = self.urlbase + 'logout'
-        session.get(url, verify=False, timeout=self.timeout)
+        session.get(url, verify=self.verify, timeout=self.timeout)
         logging.info("Session logged out.")
 
     # General Logic Methods
@@ -75,7 +78,7 @@ class FortiGate:
         :return: Bool - True if exists, False if not
         """
         session = self.login()
-        request = session.get(object_url, verify=False, timeout=self.timeout, params='vdom='+self.vdom)
+        request = session.get(object_url, verify=self.verify, timeout=self.timeout, params='vdom='+self.vdom)
         self.logout(session)        
         if request.status_code == 200:
             return True
@@ -92,7 +95,7 @@ class FortiGate:
         :return: Request result if successful (type list), HTTP status code otherwise (type int)
         """
         session = self.login()
-        request = session.get(url, verify=False, timeout=self.timeout, params='vdom='+self.vdom)
+        request = session.get(url, verify=self.verify, timeout=self.timeout, params='vdom='+self.vdom)
         self.logout(session)
         if request.status_code == 200:
             return request.json()['results']
@@ -109,7 +112,7 @@ class FortiGate:
         :return: HTTP status code returned from PUT operation
         """
         session = self.login()
-        result = session.put(url, data=data, verify=False, timeout=self.timeout, params='vdom='+self.vdom).status_code
+        result = session.put(url, data=data, verify=self.verify, timeout=self.timeout, params='vdom='+self.vdom).status_code
         self.logout(session)
         return result
 
@@ -123,7 +126,7 @@ class FortiGate:
         :return: HTTP status code returned from POST operation
         """
         session = self.login()
-        result = session.post(url, data=data, verify=False, timeout=self.timeout, params='vdom='+self.vdom).status_code
+        result = session.post(url, data=data, verify=self.verify, timeout=self.timeout, params='vdom='+self.vdom).status_code
         self.logout(session)
         return result
 
@@ -136,7 +139,7 @@ class FortiGate:
         :return: HTTP status code returned from DELETE operation
         """
         session = self.login()
-        result = session.delete(url, verify=False, timeout=self.timeout, params='vdom='+self.vdom).status_code
+        result = session.delete(url, verify=self.verify, timeout=self.timeout, params='vdom='+self.vdom).status_code
         self.logout(session)
         return result
 
