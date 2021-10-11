@@ -1,9 +1,25 @@
 # Table Of Contents
+1. [Version 0.3.0](#v030)
 1. [Version 0.2.1](#v021)
 1. [Version 0.2.0](#v020)
 1. [Version 0.1.0](#v010)
 1. [Version 0.0.8](#v008)
 
+---
+
+## v0.3.0
+
+### New Features
+
+* Allow optional override of SSL verification parameter [[PR#18]](https://github.com/jsimpso/PyFortiAPI/pull/18)
+
+### Enhancements
+
+None
+
+### Bug Fixes
+
+None
 
 ---
 
