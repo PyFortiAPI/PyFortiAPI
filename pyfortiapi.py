@@ -12,11 +12,12 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
 class FortiGate:
-    def __init__(self, ipaddr, username, password, timeout=10, vdom="root", port="443", verify=False):
+    def __init__(self, ipaddr, username=None, password=None, access_token=None, timeout=10, vdom="root", port="443", verify=False):
 
         self.ipaddr = ipaddr
         self.username = username
         self.password = password
+        self.access_token = access_token
         self.port = port
         self.urlbase = "https://{ipaddr}:{port}/".format(ipaddr=self.ipaddr,port=self.port)
         self.timeout = timeout
@@ -36,24 +37,29 @@ class FortiGate:
             # Disable requests' warnings for insecure connections
             requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-        url = self.urlbase + 'logincheck'
+        if self.access_token:
+            session.headers.update({"Authorization": f"Bearer {self.access_token}"})
+        
+        else:
+            url = self.urlbase + 'logincheck'
 
-        # Login
-        session.post(url,
-                     data='username={username}&secretkey={password}'.format(username=self.username,
-                                                                            password=self.password),
-                     verify=self.verify,
-                     timeout=self.timeout)
+            # Login
+            session.post(url,
+                        data='username={username}&secretkey={password}'.format(username=self.username,
+                                                                                password=self.password),
+                        verify=self.verify,
+                        timeout=self.timeout)
 
-        # Get CSRF token from cookies, add to headers
-        for cookie in session.cookies:
-            if cookie.name == 'ccsrftoken':
-                csrftoken = cookie.value[1:-1]  # strip quotes
-                session.headers.update({'X-CSRFTOKEN': csrftoken})
+            # Get CSRF token from cookies, add to headers
+            for cookie in session.cookies:
+                if cookie.name == 'ccsrftoken':
+                    csrftoken = cookie.value[1:-1]  # strip quotes
+                    session.headers.update({'X-CSRFTOKEN': csrftoken})
 
-        # Check whether login was successful
-        login_check = session.get(self.urlbase + "api/v2/cmdb/system/vdom")
-        login_check.raise_for_status()
+            # Check whether login was successful
+            login_check = session.get(self.urlbase + "api/v2/cmdb/system/vdom")
+            login_check.raise_for_status()
+        
         return session
 
     def logout(self, session):
@@ -64,6 +70,8 @@ class FortiGate:
 
         :return: None
         """
+        if self.access_token:
+            return
         url = self.urlbase + 'logout'
         session.get(url, verify=self.verify, timeout=self.timeout)
         logging.info("Session logged out.")
