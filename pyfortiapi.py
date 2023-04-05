@@ -2,7 +2,7 @@
 __author__ = "James Simpson"
 __copyright__ = "Copyright 2017, James Simpson"
 __license__ = "MIT"
-__version__ = "0.5.0"
+__version__ = "0.6.0"
 
 import requests
 import logging
@@ -170,6 +170,47 @@ class FortiGate:
 
         result = self._session.delete(url, verify=self.verify, timeout=self.timeout, params='vdom=' + self.vdom).status_code
         return result
+  
+
+
+#Firewall Configuration File Download
+    
+        def download_config(self, destination='file', scope='global', file_format='fos', enc_password=None,
+                        password_mask=None):
+        """
+                config_file = device.download_config()
+                Download the configuration file and save it in the current directory with the format "hostname.conf".
+               :param enc_password: Optional encryption password for the configuration file.
+               :param password_mask: Optional flag to mask passwords in the configuration file.
+               :return: None
+        """
+        # Get the system status to obtain the hostname
+        system_status_url = f"{self.urlbase}api/v2/monitor/system/status"
+        system_status = self.get(system_status_url)
+        hostname = system_status.get("hostname", "unknown_hostname")
+
+        # Download the configuration file
+        config_url = f"{self.urlbase}api/v2/monitor/system/config/backup"
+        request_params = {
+            'destination': 'file',
+            'scope': 'global',
+            'file_format': 'fos',
+            'password_mask': str(password_mask).lower()
+        }
+        if enc_password:
+            request_params['enc_password'] = enc_password
+
+        session = self._get_session()
+        response = session.get(config_url, params=request_params, verify=self.verify, timeout=self.timeout)
+
+        # Save the configuration file
+        config_file_name = f"{hostname}.conf"
+        with open(os.path.join(os.getcwd(), config_file_name), "wb") as config_file:
+            config_file.write(response.content)
+
+        print(f"Configuration file saved as {config_file_name}")
+        
+        
 
     # Firewall Address Methods
     def get_firewall_address(self, specific=False, filters=False):
