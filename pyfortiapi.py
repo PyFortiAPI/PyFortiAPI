@@ -47,7 +47,7 @@ class FortiGate:
 
         # Get CSRF token from cookies, add to headers
         for cookie in session.cookies:
-            if cookie.name.startswith == 'ccsrftoken_':
+            if 'ccsrftoken_' in cookie.name:
                 csrftoken = cookie.value[1:-1]  # strip quotes
                 session.headers.update({'X-CSRFTOKEN': csrftoken})
 
