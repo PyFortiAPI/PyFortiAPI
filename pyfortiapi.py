@@ -47,7 +47,7 @@ class FortiGate:
 
         # Get CSRF token from cookies, add to headers
         for cookie in session.cookies:
-            if 'ccsrftoken_' in cookie.name:
+            if cookie.name.startswith('ccsrftoken_'):
                 csrftoken = cookie.value[1:-1]  # strip quotes
                 session.headers.update({'X-CSRFTOKEN': csrftoken})
 
@@ -79,7 +79,7 @@ class FortiGate:
         """
         session = self.login()
         request = session.get(object_url, verify=self.verify, timeout=self.timeout, params='vdom='+self.vdom)
-        self.logout(session)        
+        self.logout(session)
         if request.status_code == 200:
             return True
         else:
@@ -554,7 +554,7 @@ class FortiGate:
         :param specific: If provided, a specific object will be returned. If not, all objects will be returned.
             Specific can either be the Community string, or its internal ID.
         :param filters: If provided, the raw filter is appended to the API call.
-        
+
         :return: JSON data for all objects in scope of request, nested in a list.
         """
         api_url = self.urlbase + "api/v2/cmdb/system.snmp/community/"
@@ -618,9 +618,9 @@ class FortiGate:
         """
         Get ISDB (internet services database)
 
-        :param specific: If provided, a specific object will be returned. 
+        :param specific: If provided, a specific object will be returned.
         :param filters: If provided, the raw filter is appended to the API call.
-        
+
         :return: JSON data for all objects in scope of request, nested in a list.
         """
         api_url = self.urlbase + "api/v2/cmdb/firewall/internet-service/"
